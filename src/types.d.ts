@@ -27,3 +27,7 @@ interface QuestSubmissionResult {
 interface Quest {
   questId: string
 }
+
+interface Scorer {
+  getScore: (submissionText: string) => number
+}

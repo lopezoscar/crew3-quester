@@ -13,29 +13,52 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ValidationError_1 = __importDefault(require("../errors/ValidationError"));
+const joyfull_word_scorer_1 = __importDefault(require("./claim/joyfull-word-scorer"));
+const offensive_language_validator_1 = __importDefault(require("./claim/offensive-language-validator"));
+const palindrome_scorer_1 = __importDefault(require("./claim/palindrome-scorer"));
+const punctuation_scorer_1 = __importDefault(require("./claim/punctuation-scorer"));
+const repetitive_sequence_scorer_1 = __importDefault(require("./claim/repetitive-sequence-scorer"));
 class QuestService {
     constructor({ questModel }) {
         this.questModel = questModel;
+        this.scorers = [
+            new punctuation_scorer_1.default(),
+            new palindrome_scorer_1.default(),
+            new joyfull_word_scorer_1.default(),
+            new repetitive_sequence_scorer_1.default()
+        ];
+        this.offensiveLanguageValidator = new offensive_language_validator_1.default();
     }
     claim(questSubmission) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { questId, userId } = questSubmission;
-            const userHasAlreadyCompletedQuest = this.getQuestByQuestIdAndUserId({ questId, userId });
+            const { questId, userId, submission_text: submissionText } = questSubmission;
+            const userHasAlreadyCompletedQuest = this.questModel.getQuestByQuestIdAndUserId({ questId, userId });
             console.log('userHasAlreadyCompletedQuest', userHasAlreadyCompletedQuest);
             if (typeof userHasAlreadyCompletedQuest !== 'undefined' && userHasAlreadyCompletedQuest !== null) {
                 throw new ValidationError_1.default('claim already completed');
             }
-            // const isValidQuestSubmission = accessCondition.every(accessCondition => {
-            // })
-            console.log('questSubmission', questSubmission);
-            return yield Promise.resolve({
+            const score = this.getScore(submissionText);
+            console.log('score', score);
+            const response = {
                 status: 'success',
-                score: 3
-            });
+                score
+            };
+            return response;
         });
     }
-    getQuestByQuestIdAndUserId({ questId, userId }) {
-        return this.questModel.getQuestByQuestIdAndUserId({ questId, userId });
+    getScore(submissionText) {
+        // Bonus: Check if the input string contains any offensive language or hate speech. If it does, return a score of 0.
+        const containsOffensiveLanguage = this.offensiveLanguageValidator.validate(submissionText);
+        if (containsOffensiveLanguage) {
+            return 0;
+        }
+        const finalScore = this.scorers.reduce((finalScore, scorer) => {
+            const score = scorer.getScore(submissionText);
+            console.log(scorer, score);
+            finalScore += score;
+            return finalScore;
+        }, 0);
+        return finalScore;
     }
 }
 exports.default = QuestService;
