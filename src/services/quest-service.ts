@@ -1,5 +1,5 @@
 import QuestModel from '../models/quest-model'
-import JoyFullWordScore from './claim/scorers/joyfull-word-scorer'
+import JoyfulWordScorer from './claim/scorers/joyful-word-scorer'
 import OffensiveLanguageValidator from './claim/offensive-language-validator'
 import PalindromeScore from './claim/scorers/palindrome-scorer'
 import PuctuantionScore from './claim/scorers/punctuation-scorer'
@@ -28,7 +28,7 @@ class QuestService {
     this.scorers = [
       new PuctuantionScore(),
       new PalindromeScore(),
-      new JoyFullWordScore(),
+      new JoyfulWordScorer(),
       new RepetitiveSequenceScore()
     ]
     this.offensiveLanguageValidator = new OffensiveLanguageValidator()
