@@ -38,14 +38,15 @@ class QuestService {
     claim(questSubmission) {
         return __awaiter(this, void 0, void 0, function* () {
             const { questId, userId, access_condition: accessCondition, submission_text: submissionText } = questSubmission;
-            const userHasAlreadyCompletedQuest = this.questModel.getQuestByQuestIdAndUserId({ questId, userId });
-            console.log('userHasAlreadyCompletedQuest', userHasAlreadyCompletedQuest);
+            const questByUser = this.questModel.getQuestByQuestIdAndUserId({ questId, userId });
+            const userQuestUncompleted = questByUser == null || typeof questByUser === 'undefined';
+            console.log('userQuestUncompleted', userQuestUncompleted);
             const allAccessConditionsAreValid = this.validateAccessCondition(accessCondition, questSubmission);
             console.log('allAccessConditionsAreValid', allAccessConditionsAreValid);
             const score = this.getScore(submissionText);
             console.log('score', score);
             const response = {
-                status: this.getResponseStatus({ allAccessConditionsAreValid, userHasAlreadyCompletedQuest, score }),
+                status: this.getResponseStatus({ allAccessConditionsAreValid, userQuestUncompleted, score }),
                 score
             };
             return response;
@@ -73,10 +74,10 @@ class QuestService {
             return result;
         });
     }
-    getResponseStatus({ allAccessConditionsAreValid, userHasAlreadyCompletedQuest, score }) {
+    getResponseStatus({ allAccessConditionsAreValid, userQuestUncompleted, score }) {
         const SUCCESSFUL_SCORE = 5;
         if (Boolean(allAccessConditionsAreValid) &&
-            Boolean(userHasAlreadyCompletedQuest) &&
+            Boolean(userQuestUncompleted) &&
             score >= SUCCESSFUL_SCORE) {
             return 'sucess';
         }
