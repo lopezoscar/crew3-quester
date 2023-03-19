@@ -26,7 +26,7 @@ class QuestRouter {
       console.log('response', response)
       res.status(StatusCodes.OK).json(response)
     } catch (error) {
-      console.log(error)
+      console.log(typeof error)
       if (error instanceof ValidationError) {
         return next(new createError.BadRequest(error.message))
       }
