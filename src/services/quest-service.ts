@@ -4,7 +4,7 @@ import OffensiveLanguageValidator from './claim/offensive-language-validator'
 import PalindromeScore from './claim/scorers/palindrome-scorer'
 import PuctuantionScore from './claim/scorers/punctuation-scorer'
 import RepetitiveSequenceScore from './claim/scorers/repetitive-sequence-scorer'
-import NFTValidator from './claim/access-condition-validators/ntf-validator'
+import NFTValidator from './claim/access-condition-validators/nft-validator'
 import LevelValidator from './claim/access-condition-validators/level-validator'
 import DateValidator from './claim/access-condition-validators/date-validator'
 
@@ -73,6 +73,9 @@ class QuestService {
   }
 
   private validateAccessCondition (accessCondition: AccessCondition[], questSubmission: QuestSubmission): boolean {
+    if (accessCondition.length === 0) {
+      return false
+    }
     return accessCondition.every((condition) => {
       const validator = this.accessConditionValidators.get(condition.type)
       const result = validator?.validate(condition, questSubmission)

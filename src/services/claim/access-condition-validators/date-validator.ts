@@ -1,6 +1,6 @@
 const OPERATIONS = {
-  '>': (conditionDate, claimedAt): boolean => { return conditionDate > claimedAt },
-  '<': (conditionDate, claimedAt): boolean => { return conditionDate < claimedAt }
+  '>': (claimedAt, conditionDate): boolean => { return claimedAt > conditionDate },
+  '<': (claimedAt, conditionDate): boolean => { return claimedAt < conditionDate }
 }
 
 class DateValidator implements AccessConditionValidator {
@@ -13,7 +13,7 @@ class DateValidator implements AccessConditionValidator {
 
     const claimedAt = new Date(questSubmission.claimed_at)
     const conditionDate = new Date(condition.value)
-    return operation(conditionDate, claimedAt)
+    return operation(claimedAt, conditionDate)
   }
 }
 
