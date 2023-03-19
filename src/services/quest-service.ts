@@ -87,7 +87,7 @@ class QuestService {
       Boolean(allAccessConditionsAreValid) &&
       Boolean(userQuestUncompleted) &&
       score >= SUCCESSFUL_SCORE) {
-      return 'sucess'
+      return 'success'
     }
     return 'fail'
   }
