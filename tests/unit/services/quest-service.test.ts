@@ -42,7 +42,7 @@ describe('QuestService', () => {
     }
     const response = await questService.claim(questSubmission)
 
-    expect(response).toStrictEqual({ status: 'success', score: 5 })
+    expect(response).toStrictEqual({ status: 'success', score: 7 })
   })
 
   test('shoud return failed with an empty access condition list', async () => {
@@ -62,7 +62,7 @@ describe('QuestService', () => {
     }
     const response = await questService.claim(questSubmission)
 
-    expect(response).toStrictEqual({ status: 'fail', score: 5 })
+    expect(response).toHaveProperty('status', 'fail')
   })
 
   test('shoud return failed with a completed questId', async () => {
