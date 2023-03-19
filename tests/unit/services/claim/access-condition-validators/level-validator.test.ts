@@ -1,13 +1,13 @@
-import NFTValidator from '../../../../../src/services/claim/access-condition-validators/nft-validator'
+import LevelValidator from '../../../../../src/services/claim/access-condition-validators/level-validator'
 
-describe('NFTValidator', () => {
-  let validator: NFTValidator
+describe('LevelValidator', () => {
+  let validator: LevelValidator
 
   beforeAll(() => {
-    validator = new NFTValidator()
+    validator = new LevelValidator()
   })
 
-  test('should return true when accessCondition type nft contains the NFT 0x1 and the user has the NFT 0x1 in user_data', () => {
+  test('should return true when accessCondition type level compare user_data.level with condition.level', () => {
     const questSubmission: QuestSubmission = {
       questId: '94e2e33e-07e9-4750-8cea-c033d7706057',
       userId: 'cb413e98-44a4-4bb1-aaa1-0b91ab1707e7',
@@ -40,15 +40,15 @@ describe('NFTValidator', () => {
     }
 
     const condition = {
-      type: 'nft',
-      operator: 'contains',
-      value: '0x1'
+      type: 'level',
+      value: '2',
+      operator: '>'
     }
     const isValid = validator.validate(condition, questSubmission)
     expect(isValid).toBe(true)
   })
 
-  test('should return false when accessCondition type nft use the notContains operator with the NFT 0x1 and the user has the NFT 0x1 in user_data', () => {
+  test('should return false when accessCondition is invalid', () => {
     const questSubmission: QuestSubmission = {
       questId: '94e2e33e-07e9-4750-8cea-c033d7706057',
       userId: 'cb413e98-44a4-4bb1-aaa1-0b91ab1707e7',
@@ -56,7 +56,7 @@ describe('NFTValidator', () => {
       access_condition: [
         {
           type: 'nft',
-          operator: 'notContains',
+          operator: 'contains',
           value: '0x1'
         },
         {
@@ -65,7 +65,7 @@ describe('NFTValidator', () => {
           operator: '<'
         },
         {
-          type: 'level',
+          type: '',
           value: '2',
           operator: '>'
         }
@@ -81,9 +81,9 @@ describe('NFTValidator', () => {
     }
 
     const condition = {
-      type: 'nft',
-      operator: 'notContains',
-      value: '0x1'
+      type: '',
+      value: '2',
+      operator: '>'
     }
     const isValid = validator.validate(condition, questSubmission)
     expect(isValid).toBe(false)
