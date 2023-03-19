@@ -4,6 +4,94 @@ Crew3 functions as a central hub for web3 communities, where contributors gather
 
 For this assignement, you will create a simple version of our claim quest endpoint, written in NodeJs (using the framework of your choice) and Typescript. Given a JSON payload that represents a quest submission, the endpoint should return a JSON response that includes the submission's success status and a score that reflects the submission's quality. 
 
+## Requirements
+
+* Node.js 14 or above
+
+## Getting started
+
+> npm install
+
+> npm start
+
+## API Request examples
+
+> /quest/claim
+
+```bash
+curl --location --request POST 'http://localhost:3000/quest/claim' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "questId": "4569bee2-8f42-4054-b432-68f6ddbc20b5", 
+  "userId": "cb413e98-44a4-4bb1-aaa1-0b91ab1707e7", 
+  "claimed_at": "2023-03-15T10:44:22+0000", 
+  "access_condition": [ 
+   {
+      "type": "nft",
+      "operator": "contains",
+      "value": "0x1"
+   },
+   {
+     "type": "date",
+     "value": "2023-02-15T10:44:22+0000",
+     "operator": "<"
+   },
+   {
+     "type": "level",
+     "value": "2",
+     "operator": ">"
+   }
+  ],
+  "user_data": {
+    "completed_quests": [
+      "94e2e33e-07e9-4750-8cea-c033d7706057"
+    ],
+    "nfts": ["0x1", "0x2"],
+    "level": 3
+  },
+  "submission_text": "aaa abaaba!.. joyful"
+}'
+
+```
+
+## API Endpoints
+
+> /quest/claim
+
+## Architecture
+
+> app.ts (entrypoint for the server)
+
+> routers (express routing, request validation and http status management)
+
+> services (business logic)
+
+> models (entities and data access)
+
+> util (utility functions. e.x validations)
+
+> error (error for business logic and routers - services don't know about HTTP)
+
+## Testing
+
+This project is tested with jest
+
+You can run `npm test` to run the whole suite of tests and the coverage report
+
+If you want to code and test, run `npm run test:watch`
+
+## Features
+
+## Future improvements
+
+* Add a API Catalog like Swagger
+* Add a logger
+* Add monitoring
+* Add authentication and authorization
+* Improve scalability of types.d.ts and app.ts
+
+## Assessment
+
 ## The input
 ```jsonc
 {
