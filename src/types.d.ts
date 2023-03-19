@@ -23,3 +23,7 @@ interface QuestSubmissionResult {
   status: string
   score: number
 }
+
+interface Quest {
+  questId: string
+}

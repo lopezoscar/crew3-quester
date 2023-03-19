@@ -30,10 +30,12 @@ const express_1 = __importDefault(require("express"));
 const bodyParser = __importStar(require("body-parser"));
 const quest_router_1 = __importDefault(require("./routers/quest-router"));
 const quest_service_1 = __importDefault(require("./services/quest-service"));
+const quest_model_1 = __importDefault(require("./models/quest-model"));
 const app = (0, express_1.default)();
 app.use(bodyParser.json());
 const port = typeof process.env.PORT !== 'undefined' ? process.env.PORT : 3000;
-const questService = new quest_service_1.default();
+const questModel = new quest_model_1.default({ db: new Map() });
+const questService = new quest_service_1.default({ questModel });
 const questRouter = new quest_router_1.default({ questService });
 app.use(questRouter.getRouter());
 app.listen(port, () => {
