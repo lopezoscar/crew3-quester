@@ -1,6 +1,6 @@
 import PalindromeScorer from '../../../../../src/services/claim/scorers/palindrome-scorer'
 
-describe('JoyFullWordScorer', () => {
+describe('PalindromeScorer', () => {
   let scorer: PalindromeScorer
 
   beforeAll(() => {
