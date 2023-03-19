@@ -19,7 +19,7 @@ describe('PalindromeScorer', () => {
     expect(score).toBe(0)
   })
 
-  test('should return score 0 when the has not palindrome', () => {
+  test('should return score 0 when it has not palindrome', () => {
     const submissionText = 'Hi there'
     const score = scorer.getScore(submissionText)
     expect(score).toBe(0)
