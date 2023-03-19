@@ -31,3 +31,7 @@ interface Quest {
 interface Scorer {
   getScore: (submissionText: string) => number
 }
+
+interface AccessConditionValidator {
+  validate: (condition: AccessCondition, questSubmission: QuestSubmission) => boolean
+}

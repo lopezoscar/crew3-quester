@@ -12,15 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ValidationError_1 = __importDefault(require("../errors/ValidationError"));
-const joyfull_word_scorer_1 = __importDefault(require("./claim/joyfull-word-scorer"));
+const joyfull_word_scorer_1 = __importDefault(require("./claim/scorers/joyfull-word-scorer"));
 const offensive_language_validator_1 = __importDefault(require("./claim/offensive-language-validator"));
-const palindrome_scorer_1 = __importDefault(require("./claim/palindrome-scorer"));
-const punctuation_scorer_1 = __importDefault(require("./claim/punctuation-scorer"));
-const repetitive_sequence_scorer_1 = __importDefault(require("./claim/repetitive-sequence-scorer"));
+const palindrome_scorer_1 = __importDefault(require("./claim/scorers/palindrome-scorer"));
+const punctuation_scorer_1 = __importDefault(require("./claim/scorers/punctuation-scorer"));
+const repetitive_sequence_scorer_1 = __importDefault(require("./claim/scorers/repetitive-sequence-scorer"));
+const ntf_validator_1 = __importDefault(require("./claim/access-condition-validators/ntf-validator"));
+const level_validator_1 = __importDefault(require("./claim/access-condition-validators/level-validator"));
+const date_validator_1 = __importDefault(require("./claim/access-condition-validators/date-validator"));
 class QuestService {
     constructor({ questModel }) {
         this.questModel = questModel;
+        this.accessConditionValidators = new Map();
+        this.accessConditionValidators.set('nft', new ntf_validator_1.default());
+        this.accessConditionValidators.set('level', new level_validator_1.default());
+        this.accessConditionValidators.set('date', new date_validator_1.default());
         this.scorers = [
             new punctuation_scorer_1.default(),
             new palindrome_scorer_1.default(),
@@ -31,16 +37,15 @@ class QuestService {
     }
     claim(questSubmission) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { questId, userId, submission_text: submissionText } = questSubmission;
+            const { questId, userId, access_condition: accessCondition, submission_text: submissionText } = questSubmission;
             const userHasAlreadyCompletedQuest = this.questModel.getQuestByQuestIdAndUserId({ questId, userId });
             console.log('userHasAlreadyCompletedQuest', userHasAlreadyCompletedQuest);
-            if (typeof userHasAlreadyCompletedQuest !== 'undefined' && userHasAlreadyCompletedQuest !== null) {
-                throw new ValidationError_1.default('claim already completed');
-            }
+            const allAccessConditionsAreValid = this.validateAccessCondition(accessCondition, questSubmission);
+            console.log('allAccessConditionsAreValid', allAccessConditionsAreValid);
             const score = this.getScore(submissionText);
             console.log('score', score);
             const response = {
-                status: 'success',
+                status: this.getResponseStatus({ allAccessConditionsAreValid, userHasAlreadyCompletedQuest, score }),
                 score
             };
             return response;
@@ -59,6 +64,23 @@ class QuestService {
             return finalScore;
         }, 0);
         return finalScore;
+    }
+    validateAccessCondition(accessCondition, questSubmission) {
+        return accessCondition.every((condition) => {
+            const validator = this.accessConditionValidators.get(condition.type);
+            const result = validator === null || validator === void 0 ? void 0 : validator.validate(condition, questSubmission);
+            console.log('validator', validator, 'result', result);
+            return result;
+        });
+    }
+    getResponseStatus({ allAccessConditionsAreValid, userHasAlreadyCompletedQuest, score }) {
+        const SUCCESSFUL_SCORE = 5;
+        if (Boolean(allAccessConditionsAreValid) &&
+            Boolean(userHasAlreadyCompletedQuest) &&
+            score >= SUCCESSFUL_SCORE) {
+            return 'sucess';
+        }
+        return 'fail';
     }
 }
 exports.default = QuestService;
