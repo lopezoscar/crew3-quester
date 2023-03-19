@@ -1,4 +1,3 @@
-import ValidationError from '../errors/ValidationError'
 import QuestModel from '../models/quest-model'
 import JoyFullWordScore from './claim/scorers/joyfull-word-scorer'
 import OffensiveLanguageValidator from './claim/offensive-language-validator'
