@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const remove_punctuation_1 = require("../../../util/remove-punctuation");
 const POINTS = 2;
 class PalindromeScorer {
     // If the string contains a palindrome, add 2 points.
@@ -11,7 +12,10 @@ class PalindromeScorer {
             return 0;
         }
         const words = submissionText.split(' ');
-        const isPalindrome = words.some((word) => this.isAPalindrome(word.toLowerCase()));
+        const isPalindrome = words.some((word) => {
+            const cleanWord = (0, remove_punctuation_1.removePunctuation)(word.toLowerCase());
+            return this.isAPalindrome(cleanWord);
+        });
         return isPalindrome ? POINTS : 0;
     }
     isAPalindrome(word) {

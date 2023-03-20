@@ -1,3 +1,4 @@
+import { removePunctuation } from '../../../util/remove-punctuation'
 const JOYFULL_WORDS = Object.freeze(new Set(['joyful', 'happy', 'vibrant', 'thrilled', 'euphoric', 'cheerful', 'delighted']))
 const POINTS_PER_WORD = 1
 const LIMIT_WORDS = 3
@@ -12,7 +13,7 @@ class JoyfulWordScorer implements Scorer {
 
     let joyfullWordsCounter = 0
     for (let index = 0; index < words.length && joyfullWordsCounter <= LIMIT_WORDS; index++) {
-      const word = this.removePunctuation(words[index])
+      const word = removePunctuation(words[index])
       if (JOYFULL_WORDS.has(word)) {
         joyfullWordsCounter++
       }
@@ -23,11 +24,6 @@ class JoyfulWordScorer implements Scorer {
     }
 
     return joyfullWordsCounter * POINTS_PER_WORD
-  }
-
-  private removePunctuation (word): string {
-    const regex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g
-    return word.replace(regex, '')
   }
 }
 

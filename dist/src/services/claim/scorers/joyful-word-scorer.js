@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const remove_punctuation_1 = require("../../../util/remove-punctuation");
 const JOYFULL_WORDS = Object.freeze(new Set(['joyful', 'happy', 'vibrant', 'thrilled', 'euphoric', 'cheerful', 'delighted']));
 const POINTS_PER_WORD = 1;
 const LIMIT_WORDS = 3;
@@ -12,7 +13,7 @@ class JoyfulWordScorer {
         const words = submissionText.toLowerCase().split(' ');
         let joyfullWordsCounter = 0;
         for (let index = 0; index < words.length && joyfullWordsCounter <= LIMIT_WORDS; index++) {
-            const word = this.removePunctuation(words[index]);
+            const word = (0, remove_punctuation_1.removePunctuation)(words[index]);
             if (JOYFULL_WORDS.has(word)) {
                 joyfullWordsCounter++;
             }
@@ -21,10 +22,6 @@ class JoyfulWordScorer {
             return LIMIT_WORDS * POINTS_PER_WORD;
         }
         return joyfullWordsCounter * POINTS_PER_WORD;
-    }
-    removePunctuation(word) {
-        const regex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g;
-        return word.replace(regex, '');
     }
 }
 exports.default = JoyfulWordScorer;

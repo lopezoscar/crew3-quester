@@ -1,3 +1,4 @@
+import { removePunctuation } from '../../../util/remove-punctuation'
 const POINTS = 2
 
 class PalindromeScorer implements Scorer {
@@ -11,7 +12,10 @@ class PalindromeScorer implements Scorer {
     }
 
     const words = submissionText.split(' ')
-    const isPalindrome = words.some((word) => this.isAPalindrome(word.toLowerCase()))
+    const isPalindrome = words.some((word) => {
+      const cleanWord = removePunctuation(word.toLowerCase())
+      return this.isAPalindrome(cleanWord)
+    })
 
     return isPalindrome ? POINTS : 0
   }
