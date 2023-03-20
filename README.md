@@ -34,7 +34,7 @@ curl --location --request POST 'http://localhost:3000/quest/claim' \
    {
      "type": "date",
      "value": "2023-02-15T10:44:22+0000",
-     "operator": "<"
+     "operator": ">"
    },
    {
      "type": "level",
@@ -49,7 +49,7 @@ curl --location --request POST 'http://localhost:3000/quest/claim' \
     "nfts": ["0x1", "0x2"],
     "level": 3
   },
-  "submission_text": "aaa abaaba!.. joyful"
+  "submission_text": "Hi Ana. I'\''m happy to see you and I'\''m euphoric"
 }'
 
 ```
