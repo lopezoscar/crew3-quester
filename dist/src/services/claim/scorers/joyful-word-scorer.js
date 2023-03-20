@@ -13,9 +13,7 @@ class JoyfulWordScorer {
         let joyfullWordsCounter = 0;
         for (let index = 0; index < words.length && joyfullWordsCounter <= LIMIT_WORDS; index++) {
             const word = this.removePunctuation(words[index]);
-            console.log('checking joyfull word', word);
             if (JOYFULL_WORDS.has(word)) {
-                console.log('found joyfull word', word);
                 joyfullWordsCounter++;
             }
         }
