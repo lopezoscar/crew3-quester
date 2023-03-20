@@ -45,6 +45,7 @@ class QuestService {
             console.log('allAccessConditionsAreValid', allAccessConditionsAreValid);
             const score = this.getScore(submissionText);
             console.log('score', score);
+            this.questModel.storeQuestSubmission({ questId, userId });
             const response = {
                 status: this.getResponseStatus({ allAccessConditionsAreValid, userQuestUncompleted, score }),
                 score

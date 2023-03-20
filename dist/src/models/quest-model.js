@@ -9,6 +9,10 @@ class QuestModel {
         const key = `${userId}_${questId}`;
         return this.db.get(key);
     }
+    storeQuestSubmission({ questId = '', userId = '' }) {
+        const key = `${userId}_${questId}`;
+        this.db.set(key, { questId });
+    }
 }
 exports.default = QuestModel;
 //# sourceMappingURL=quest-model.js.map

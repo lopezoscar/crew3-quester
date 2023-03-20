@@ -10,6 +10,11 @@ class QuestModel {
     const key: string = `${userId}_${questId}`
     return this.db.get(key)
   }
+
+  storeQuestSubmission ({ questId = '', userId = '' }): void {
+    const key: string = `${userId}_${questId}`
+    this.db.set(key, { questId })
+  }
 }
 
 export default QuestModel
