@@ -4,7 +4,7 @@
   "description": "Crew3 functions as a central hub for web3 communities, where contributors gather to learn, engage, and discover new communities. The bedrock of the engagement mechanism lies in its quests, which are are designed to be modulable, fun and intuitive.",
   "main": "index.ts",
   "scripts": {
-    "start": "tsc && node dist/app.js",
+    "start": "tsc && node dist/src/app.js",
     "dev": "nodemon",
     "lint": "eslint . --ext .ts",
     "test": "jest --coverage --silent",

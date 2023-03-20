@@ -28,9 +28,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const bodyParser = __importStar(require("body-parser"));
-// import QuestRouter from './routers/quest-router'
-// import QuestService from './services/quest-service'
-// import QuestModel from './models/quest-model'
 const routers_1 = __importDefault(require("./routers"));
 const services_1 = __importDefault(require("./services"));
 const models_1 = __importDefault(require("./models"));
@@ -41,10 +38,6 @@ const db = new Map();
 const models = (0, models_1.default)(db);
 const services = (0, services_1.default)(models);
 const routers = (0, routers_1.default)(services);
-// const questModel = new QuestModel({ db: new Map() })
-// const questService = new QuestService({ questModel })
-// const questRouter = new QuestRouter({ questService })
-// app.use(questRouter.getRouter())
 for (const router in routers) {
     const routerInstance = routers[router];
     app.use(routerInstance.getRouter());
