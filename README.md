@@ -88,7 +88,7 @@ If you want to code and test, run `npm run test:watch`
 * Add a logger
 * Add monitoring
 * Add authentication and authorization
-* Improve scalability of types.d.ts and app.ts
+* Improve scalability of types.d.ts
 
 ## Assessment
 
